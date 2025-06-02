@@ -1,100 +1,143 @@
 // Modern JavaScript with ES6+ features
 'use strict';
 
-// Main app class
+// Main application class for ShoreSquad
 class ShoreSquad {
     constructor() {
         this.initializeApp();
-    }
+    }    async initializeApp() {
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 50
+        });
 
-    async initializeApp() {
-        await Promise.all([
-            this.initMap(),
-            this.initWeather(),
-            this.loadCommunityData()
-        ]);
+        // Initialize managers
+        this.mapManager = new MapManager();
+        this.weatherManager = new WeatherManager();
+        this.communityManager = new CommunityManager();
 
+        // Setup mobile menu
+        this.setupMobileMenu();
+
+        // Setup global event listeners
         this.setupEventListeners();
+        
+        // Initialize service worker for PWA support
+        this.initServiceWorker();
     }
 
-    // Initialize the map (using Leaflet.js - you'll need to add the library)
-    async initMap() {
-        try {
-            // Map initialization code will go here
-            console.log('Map initialized');
-        } catch (error) {
-            console.error('Error initializing map:', error);
-        }
-    }
-
-    // Initialize weather widget
-    async initWeather() {
-        try {
-            // Weather API integration will go here
-            console.log('Weather widget initialized');
-        } catch (error) {
-            console.error('Error initializing weather:', error);
-        }
-    }
-
-    // Load community data
-    async loadCommunityData() {
-        try {
-            // Fetch and display community data
-            console.log('Community data loaded');
-        } catch (error) {
-            console.error('Error loading community data:', error);
-        }
-    }
-
-    // Set up event listeners
     setupEventListeners() {
         // Navigation smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', (e) => {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Join button handler
-        const joinBtn = document.querySelector('.join-btn');
-        if (joinBtn) {
-            joinBtn.addEventListener('click', () => this.handleJoin());
-        }
-
-        // Intersection Observer for animations
-        this.setupScrollAnimations();
-    }
-
-    // Handle join button click
-    handleJoin() {
-        // Join functionality will go here
-        console.log('Join button clicked');
-    }
-
-    // Set up scroll animations
-    setupScrollAnimations() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                const target = document.querySelector(anchor.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
-        }, {
-            threshold: 0.1
         });
 
-        // Observe all sections
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
+        // Mobile menu toggle
+        this.setupMobileMenu();
+
+        // Handle scroll for navbar transparency
+        this.handleNavbarScroll();
+    }
+
+    setupMobileMenu() {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const body = document.body;
+
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'menu-overlay';
+        body.appendChild(overlay);
+
+        // Toggle menu
+        menuToggle?.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks?.classList.toggle('active');
+            overlay.classList.toggle('active');
+            body.style.overflow = navLinks?.classList.contains('active') ? 'hidden' : '';
         });
+
+        // Close menu when clicking overlay
+        overlay.addEventListener('click', () => {
+            menuToggle?.classList.remove('active');
+            navLinks?.classList.remove('active');
+            overlay.classList.remove('active');
+            body.style.overflow = '';
+        });
+
+        // Close menu when clicking nav links
+        navLinks?.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle?.classList.remove('active');
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+                body.style.overflow = '';
+            });
+        });
+
+        // Handle escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks?.classList.contains('active')) {
+                menuToggle?.classList.remove('active');
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+                body.style.overflow = '';
+            }
+        });
+    }
+
+    handleNavbarScroll() {
+        const navbar = document.querySelector('.navbar');
+        if (!navbar) return;
+
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            // Add/remove background when scrolling
+            if (currentScroll > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // Hide/show navbar based on scroll direction
+            if (currentScroll > lastScroll && currentScroll > 500) {
+                navbar.classList.add('nav-hidden');
+            } else {
+                navbar.classList.remove('nav-hidden');
+            }
+            
+            lastScroll = currentScroll;
+        });
+    }
+
+    async initServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            try {
+                await navigator.serviceWorker.register('/service-worker.js');
+                console.log('Service Worker registered successfully');
+            } catch (error) {
+                console.error('Service Worker registration failed:', error);
+            }
+        }
     }
 }
 
 // Initialize the app when the DOM is loaded
+let app;
 document.addEventListener('DOMContentLoaded', () => {
-    const app = new ShoreSquad();
+    app = new ShoreSquad();
 });

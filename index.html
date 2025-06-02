@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="ShoreSquad - Rally your crew and join beach cleanups! Track weather and organize eco-friendly events.">
-    <title>ShoreSquad - Beach Cleanup Community</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>ShoreSquad - Beach Cleanup Community</title>    <link rel="stylesheet" href="css/styles.css">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Add Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <!-- AOS CSS for scroll animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom theme color -->
+    <meta name="theme-color" content="#2E5EAA">
+    <link rel="manifest" href="manifest.json">
 </head>
-<body>
-    <header>
+<body>    <header>
         <nav class="navbar">
             <div class="logo">
                 <h1>ShoreSquad</h1>
@@ -25,34 +30,140 @@
                 <a href="#weather">Weather</a>
                 <a href="#community">Community</a>
             </div>
-            <button class="join-btn">Join Squad</button>
+            <button class="join-btn">
+                <i class="fas fa-user-plus"></i>
+                <span>Join Squad</span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle navigation menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
         </nav>
-    </header>
-
-    <main>
+    </header><main>
         <section id="hero">
-            <h1>Make Waves of Change</h1>
-            <p>Join the movement to keep our beaches clean and oceans healthy</p>
-            <div class="cta-buttons">
-                <button class="primary-btn">Find Next Cleanup</button>
-                <button class="secondary-btn">Start a Squad</button>
+            <div class="hero-content" data-aos="fade-up">
+                <h1>Make Waves of Change</h1>
+                <p>Join the movement to keep our beaches clean and oceans healthy</p>
+                <div class="cta-buttons">
+                    <button class="primary-btn" id="findCleanup">
+                        <i class="fas fa-map-marker-alt"></i> Find Next Cleanup
+                    </button>
+                    <button class="secondary-btn" id="startSquad">
+                        <i class="fas fa-users"></i> Start a Squad
+                    </button>
+                </div>
+                <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-item">
+                        <span class="stat-number" id="beachesCleaned">0</span>
+                        <span class="stat-label">Beaches Cleaned</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="activeCommunity">0</span>
+                        <span class="stat-label">Community Members</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="impactMade">0</span>
+                        <span class="stat-label">KG Waste Collected</span>
+                    </div>
+                </div>
+            </div>
+            <div class="wave-animation">
+                <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+                    <defs>
+                        <path id="wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                    </defs>
+                    <g class="wave-parallax">
+                        <use href="#wave" x="48" y="0" fill="rgba(255,255,255,0.7)" />
+                        <use href="#wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+                        <use href="#wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                        <use href="#wave" x="48" y="7" fill="#fff" />
+                    </g>
+                </svg>
             </div>
         </section>
 
-        <section id="map">
-            <!-- Map will be injected here via JavaScript -->
-            <div id="cleanup-map"></div>
+        <section id="features" class="features-section" data-aos="fade-up">
+            <h2>How It Works</h2>
+            <div class="features-grid">
+                <div class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Find Nearby Cleanups</h3>
+                    <p>Discover beach cleanup events in your area and join the community</p>
+                </div>
+                <div class="feature-card" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="fas fa-cloud-sun"></i>
+                    <h3>Check Weather</h3>
+                    <p>Get real-time weather updates and forecasts for beach conditions</p>
+                </div>
+                <div class="feature-card" data-aos="zoom-in" data-aos-delay="300">
+                    <i class="fas fa-users"></i>
+                    <h3>Join a Squad</h3>
+                    <p>Connect with like-minded people and make cleaning fun</p>
+                </div>
+            </div>
         </section>
 
-        <section id="weather">
+        <section id="map" class="map-section" data-aos="fade-up">
+            <div class="section-header">
+                <h2>Active Cleanup Locations</h2>
+                <div class="map-filters">
+                    <button class="filter-btn active" data-filter="all">All Events</button>
+                    <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                    <button class="filter-btn" data-filter="popular">Popular</button>
+                </div>
+            </div>
+            <div class="map-container">
+                <div id="cleanup-map"></div>
+                <div id="event-sidebar" class="event-sidebar">
+                    <!-- Dynamic event list will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <section id="weather" class="weather-section" data-aos="fade-up">
             <h2>Beach Weather Forecast</h2>
-            <div id="weather-widget"></div>
+            <div class="weather-container">
+                <div id="current-weather" class="weather-card"></div>
+                <div id="weather-forecast" class="forecast-grid">
+                    <!-- Weather forecast cards will be loaded here -->
+                </div>
+            </div>
         </section>
 
-        <section id="community">
+        <section id="community" class="community-section" data-aos="fade-up">
             <h2>Active Squads</h2>
             <div class="squad-grid">
-                <!-- Dynamic content will be loaded here -->
+                <!-- Dynamic squad cards will be loaded here -->
+            </div>
+            <div class="community-stats" data-aos="fade-up">
+                <div class="impact-counter">
+                    <h3>Our Collective Impact</h3>
+                    <div class="impact-numbers">
+                        <div class="impact-item">
+                            <span id="totalCleanups">0</span>
+                            <label>Cleanups Completed</label>
+                        </div>
+                        <div class="impact-item">
+                            <span id="totalVolunteers">0</span>
+                            <label>Volunteers</label>
+                        </div>
+                        <div class="impact-item">
+                            <span id="totalWaste">0</span>
+                            <label>KG Waste Collected</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="join-cta" class="join-cta-section" data-aos="fade-up">
+            <div class="cta-content">
+                <h2>Ready to Make a Difference?</h2>
+                <p>Join ShoreSquad today and be part of the change!</p>
+                <button class="primary-btn" id="joinNow">
+                    <i class="fas fa-hand-holding-heart"></i> Join Now
+                </button>
             </div>
         </section>
     </main>
@@ -78,8 +189,18 @@
                 </div>
             </div>
         </div>
-    </footer>
-
+    </footer>    <!-- External Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.0.7/countUp.min.js"></script>
+    
+    <!-- Application Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/community.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
