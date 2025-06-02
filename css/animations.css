@@ -7,6 +7,7 @@
     overflow: hidden;
     line-height: 0;
     transform: rotate(180deg);
+    z-index: 2;
 }
 
 .waves {
@@ -49,6 +50,44 @@
     100% { transform: translate3d(85px,0,0); }
 }
 
+/* Glow Effect for Primary Buttons */
+.glow-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.glow-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(255, 255, 255, 0) 70%
+    );
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glow-effect:hover .glow {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+}
+
 /* Enhanced Card Hover Effects */
 .feature-card, .squad-card, .weather-card {
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
@@ -63,9 +102,12 @@
 
 /* Floating Animation for Cards */
 @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .feature-card {
@@ -78,6 +120,23 @@
 
 .feature-card:nth-child(3) {
     animation-delay: -4s;
+}
+
+/* Pulse Animation for CTA Buttons */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 105, 148, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(0, 105, 148, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 105, 148, 0);
+    }
+}
+
+.pulse-effect {
+    animation: pulse 2s infinite;
 }
 
 /* Enhanced Button Animations */
@@ -142,7 +201,15 @@
 }
 
 .loading::after {
-    animation: loading-spin 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    content: '';
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    border: 3px solid var(--color-primary);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: loading-spin 1s linear infinite;
 }
 
 /* Modal animations */
@@ -247,70 +314,11 @@
     transform: scale(1.2);
 }
 
-/* Shimmer Effect */
-@keyframes shimmer {
-    0% { background-position: -200% center; }
-    100% { background-position: 200% center; }
-}
-
-.stat-number {
-    background: linear-gradient(
-        90deg,
-        transparent 25%,
-        rgba(255,255,255,0.3) 50%,
-        transparent 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 3s infinite;
-}
-
-/* Pulse Animation for Important Elements */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.join-btn {
-    animation: pulse 2s infinite;
-}
-
-/* Fade In Animation for Elements */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.fade-in-up {
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-/* Enhanced Modal Animations */
-@keyframes modalFadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.modal-content {
-    animation: modalFadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
 /* Parallax Scroll Effect */
 .parallax {
     transform: translateY(var(--scroll-offset));
     transition: transform 0.1s ease-out;
+    will-change: transform;
 }
 
 /* Weather Icon Animations */
@@ -327,17 +335,17 @@
 /* Mobile Menu Animation */
 @keyframes slideIn {
     from {
+        transform: translateX(100%);
         opacity: 0;
-        transform: translateX(-100%);
     }
     to {
-        opacity: 1;
         transform: translateX(0);
+        opacity: 1;
     }
 }
 
 .nav-links.active {
-    animation: slideIn 0.3s ease forwards;
+    animation: slideIn 0.3s ease-out forwards;
 }
 
 /* Gradient Text Animation */

@@ -40,29 +40,44 @@
                 <span class="bar"></span>
             </button>
         </nav>
-    </header><main>
-        <section id="hero">
+    </header><main>        <section id="hero">
             <div class="hero-content" data-aos="fade-up">
-                <h1>Make Waves of Change</h1>
-                <p>Join the movement to keep our beaches clean and oceans healthy</p>
-                <div class="cta-buttons">
-                    <button class="primary-btn" id="findCleanup">
-                        <i class="fas fa-map-marker-alt"></i> Find Next Cleanup
-                    </button>
-                    <button class="secondary-btn" id="startSquad">
-                        <i class="fas fa-users"></i> Start a Squad
-                    </button>
+                <div class="hero-text">
+                    <h1 class="gradient-text">Make Waves of Change</h1>
+                    <p class="hero-description">Join the movement to keep our beaches clean and oceans healthy. Together, we can make a difference.</p>
+                    <div class="cta-buttons">
+                        <button class="primary-btn glow-effect" id="findCleanup">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Find Next Cleanup</span>
+                            <div class="glow-container">
+                                <div class="glow"></div>
+                            </div>
+                        </button>
+                        <button class="secondary-btn pulse-effect" id="startSquad">
+                            <i class="fas fa-users"></i>
+                            <span>Start a Squad</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
+                <div class="hero-stats-container" data-aos="fade-up" data-aos-delay="200">
                     <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-beach-umbrella"></i>
+                        </div>
                         <span class="stat-number" id="beachesCleaned">0</span>
                         <span class="stat-label">Beaches Cleaned</span>
                     </div>
                     <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
                         <span class="stat-number" id="activeCommunity">0</span>
                         <span class="stat-label">Community Members</span>
                     </div>
                     <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
                         <span class="stat-number" id="impactMade">0</span>
                         <span class="stat-label">KG Waste Collected</span>
                     </div>
@@ -166,30 +181,85 @@
                 </button>
             </div>
         </section>
-    </main>
-
-    <footer>
+    </main>    <footer>
+        <div class="footer-waves">
+            <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+                <defs>
+                    <path id="wave-footer" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                </defs>
+                <g class="wave-parallax">
+                    <use href="#wave-footer" x="48" y="0" fill="rgba(255,255,255,0.7)" />
+                    <use href="#wave-footer" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+                    <use href="#wave-footer" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                    <use href="#wave-footer" x="48" y="7" fill="#fff" />
+                </g>
+            </svg>
+        </div>
         <div class="footer-content">
-            <div class="footer-section">
-                <h3>ShoreSquad</h3>
+            <div class="footer-section brand">
+                <div class="footer-logo">
+                    <i class="fas fa-water"></i>
+                    <h3>ShoreSquad</h3>
+                </div>
                 <p>Making beach cleanup fun and connected</p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>contact@shoresquad.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+65 1234 5678</span>
+                    </div>
+                </div>
             </div>
-            <div class="footer-section">
+            <div class="footer-section links">
                 <h4>Quick Links</h4>
-                <a href="#about">About Us</a>
-                <a href="#contact">Contact</a>
-                <a href="#privacy">Privacy Policy</a>
+                <div class="footer-links">
+                    <a href="#about"><i class="fas fa-info-circle"></i> About Us</a>
+                    <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+                    <a href="#privacy"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                    <a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
+                </div>
             </div>
-            <div class="footer-section">
-                <h4>Follow Us</h4>
+            <div class="footer-section social">
+                <h4>Connect With Us</h4>
                 <div class="social-links">
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook" class="social-btn">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" aria-label="Instagram" class="social-btn">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" aria-label="Twitter" class="social-btn">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" aria-label="LinkedIn" class="social-btn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+                <div class="newsletter">
+                    <h4>Stay Updated</h4>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email">
+                        <button type="submit" class="primary-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-    </footer>    <!-- External Libraries -->
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2025 ShoreSquad. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#terms">Terms</a>
+                    <a href="#privacy">Privacy</a>
+                    <a href="#cookies">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer><!-- External Libraries -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
